@@ -1,13 +1,11 @@
 public class Trainer {
 
-    // 1. PRIVATE FIELDS
     private int trainerId;
     private String name;
     private String specialization;
     private int experienceYears;
     private boolean available;
 
-    // 2. PARAMETERIZED CONSTRUCTOR
     public Trainer(int trainerId, String name, String specialization, int experienceYears, boolean available) {
         this.trainerId = trainerId;
         this.name = name;
@@ -16,7 +14,6 @@ public class Trainer {
         this.available = available;
     }
 
-    // 3. DEFAULT CONSTRUCTOR
     public Trainer() {
         this.trainerId = 0;
         this.name = "Unknown Trainer";
@@ -25,7 +22,7 @@ public class Trainer {
         this.available = true;
     }
 
-    // 4. GETTERS
+
     public int getTrainerId() {
         return trainerId;
     }
@@ -46,7 +43,6 @@ public class Trainer {
         return available;
     }
 
-    // 5. SETTERS
     public void setTrainerId(int trainerId) {
         this.trainerId = trainerId;
     }
@@ -67,7 +63,6 @@ public class Trainer {
         this.available = available;
     }
 
-    // 6. ADDITIONAL METHODS
     public boolean isExperienced() {
         return experienceYears >= 5;
     }
@@ -76,7 +71,6 @@ public class Trainer {
         this.available = false;
     }
 
-    // 7. toString()
     @Override
     public String toString() {
         return "Trainer{trainerId=" + trainerId +

@@ -1,13 +1,11 @@
 public class WorkoutSession {
 
-    // 1. PRIVATE FIELDS
     private int sessionId;
     private String memberName;
     private String trainerName;
     private int durationMinutes;
     private boolean completed;
 
-    // 2. PARAMETERIZED CONSTRUCTOR
     public WorkoutSession(int sessionId, String memberName, String trainerName, int durationMinutes, boolean completed) {
         this.sessionId = sessionId;
         this.memberName = memberName;
@@ -16,7 +14,6 @@ public class WorkoutSession {
         this.completed = completed;
     }
 
-    // 3. DEFAULT CONSTRUCTOR
     public WorkoutSession() {
         this.sessionId = 0;
         this.memberName = "Unknown";
@@ -25,7 +22,6 @@ public class WorkoutSession {
         this.completed = false;
     }
 
-    // 4. GETTERS
     public int getSessionId() {
         return sessionId;
     }
@@ -46,7 +42,6 @@ public class WorkoutSession {
         return completed;
     }
 
-    // 5. SETTERS
     public void setSessionId(int sessionId) {
         this.sessionId = sessionId;
     }
@@ -67,7 +62,6 @@ public class WorkoutSession {
         this.completed = completed;
     }
 
-    // 6. ADDITIONAL METHODS
     public void extendSession(int extraMinutes) {
         this.durationMinutes += extraMinutes;
     }
@@ -76,7 +70,6 @@ public class WorkoutSession {
         this.completed = true;
     }
 
-    // 7. toString()
     @Override
     public String toString() {
         return "WorkoutSession{sessionId=" + sessionId +

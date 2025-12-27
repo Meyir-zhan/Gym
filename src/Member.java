@@ -1,13 +1,11 @@
 public class Member {
 
-    // 1. PRIVATE FIELDS
     private int memberId;
     private String name;
     private int age;
     private String membershipType;
     private boolean active;
 
-    // 2. PARAMETERIZED CONSTRUCTOR
     public Member(int memberId, String name, int age, String membershipType, boolean active) {
         this.memberId = memberId;
         this.name = name;
@@ -16,7 +14,6 @@ public class Member {
         this.active = active;
     }
 
-    // 3. DEFAULT CONSTRUCTOR
     public Member() {
         this.memberId = 0;
         this.name = "Unknown Member";
@@ -25,7 +22,7 @@ public class Member {
         this.active = false;
     }
 
-    // 4. GETTERS
+
     public int getMemberId() {
         return memberId;
     }
@@ -46,7 +43,7 @@ public class Member {
         return active;
     }
 
-    // 5. SETTERS
+
     public void setMemberId(int memberId) {
         this.memberId = memberId;
     }
@@ -67,7 +64,6 @@ public class Member {
         this.active = active;
     }
 
-    // 6. ADDITIONAL METHODS
     public void upgradeMembership(String newType) {
         this.membershipType = newType;
     }
@@ -76,7 +72,6 @@ public class Member {
         return age >= 18;
     }
 
-    // 7. toString()
     @Override
     public String toString() {
         return "Member{memberId=" + memberId +
