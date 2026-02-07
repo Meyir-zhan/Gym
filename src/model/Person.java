@@ -12,7 +12,7 @@ public abstract class Person {
         this.active = active;
     }
 
-    // --- GETTERS (Required for Database) ---
+
     public int getId() {
         return id;
     }
@@ -25,7 +25,7 @@ public abstract class Person {
         return active;
     }
 
-    // --- SETTERS (Required for Logic) ---
+
     public void setId(int id) {
         // ID can be 0 when creating new objects for DB auto-generation
         if (id < 0) {

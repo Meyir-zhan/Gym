@@ -1,6 +1,5 @@
-import database.DatabaseConnection; // <--- This imports YOUR class
-import java.sql.Connection;         // <--- This imports the SQL tool
-
+import database.DatabaseConnection;
+import java.sql.Connection;
 public class TestConnection {
     public static void main(String[] args) {
         // Now it knows where "DatabaseConnection" comes from because of line 1

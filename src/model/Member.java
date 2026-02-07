@@ -11,7 +11,6 @@ public class Member extends Person {
         this.membershipType = membershipType;
     }
 
-    // --- GETTERS (Required for Database) ---
     public int getAge() {
         return age;
     }
@@ -20,7 +19,7 @@ public class Member extends Person {
         return membershipType;
     }
 
-    // --- SETTERS ---
+
     public void setAge(int age) {
         if (age < 0) {
             throw new IllegalArgumentException("Age cannot be negative");

@@ -11,7 +11,7 @@ public class Trainer extends Person implements Trainable {
         this.experienceYears = experienceYears;
     }
 
-    // --- GETTERS (Required for Database) ---
+
     public String getSpecialization() {
         return specialization;
     }
@@ -20,7 +20,7 @@ public class Trainer extends Person implements Trainable {
         return experienceYears;
     }
 
-    // --- SETTERS ---
+
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }

@@ -12,15 +12,16 @@ public class GymMenu implements Menu {
 
     @Override
     public void displayMenu() {
-        System.out.println("\n--- GYM MANAGEMENT SYSTEM (DB) ---");
+        System.out.println("\nGYM MANAGEMENT SYSTEM");
         System.out.println("1. Add Member");
         System.out.println("2. Add Trainer");
         System.out.println("3. Show All");
-        System.out.println("4. Update Name");
+        System.out.println("4. Update Person");
         System.out.println("5. Delete Person");
         System.out.println("6. Search by Name");
-        System.out.println("7. Find by ID (Req)");
-        System.out.println("8. Search Experienced Trainers (Numeric Req)");
+        System.out.println("7. Find by ID");
+        System.out.println("8. Search Experienced Trainers");
+        System.out.println("9. Search Members by Age Range");
         System.out.println("0. Exit");
     }
 
@@ -41,6 +42,7 @@ public class GymMenu implements Menu {
                 case "6" -> searchPerson();
                 case "7" -> findById();
                 case "8" -> searchByExperience();
+                case "9" -> searchByAgeRange();
                 case "0" -> running = false;
                 default -> System.out.println("Invalid choice. Try again.");
             }
@@ -53,7 +55,7 @@ public class GymMenu implements Menu {
             String name = scanner.nextLine();
             System.out.print("Age: ");
             int age = Integer.parseInt(scanner.nextLine());
-            // ID is 0 because the Database auto-generates it
+
             personDAO.addPerson(new Member(0, name, age, "Basic", true));
         } catch (NumberFormatException e) {
             System.out.println("Error: Please enter a valid number for age.");
@@ -74,7 +76,7 @@ public class GymMenu implements Menu {
 
     private void showAll() {
         List<Person> list = personDAO.getAllPeople();
-        System.out.println("\n--- Database Results ---");
+        System.out.println("\nDatabase Results");
         for (Person p : list) {
             System.out.println("ID: " + p.getId() + " | Name: " + p.getName() + " | Type: " + p.getClass().getSimpleName());
             p.work();
@@ -119,7 +121,7 @@ public class GymMenu implements Menu {
         }
     }
 
-    // --- NEW METHOD for Requirement ---
+
     private void findById() {
         System.out.print("Enter ID to find: ");
         try {
@@ -135,13 +137,13 @@ public class GymMenu implements Menu {
         }
     }
 
-    // --- NEW METHOD for Numeric Requirement ---
+
     private void searchByExperience() {
         System.out.print("Enter minimum years of experience: ");
         try {
             int years = Integer.parseInt(scanner.nextLine());
             List<Person> list = personDAO.searchByMinExperience(years);
-            System.out.println("--- Experienced Trainers ---");
+            System.out.println("Experienced Trainer");
             for (Person p : list) {
                 if (p instanceof Trainer) {
                     Trainer t = (Trainer) p;
@@ -152,4 +154,27 @@ public class GymMenu implements Menu {
             System.out.println("Invalid number.");
         }
     }
+    private void searchByAgeRange() {
+        System.out.print("Enter minimum age: ");
+        try {
+            int min = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter maximum age: ");
+            int max = Integer.parseInt(scanner.nextLine());
+
+            List<Person> list = personDAO.searchByAgeRange(min, max);
+            System.out.println("--- Members in Age Range (" + min + "-" + max + ") ---");
+
+            if (list.isEmpty()) {
+                System.out.println("No members found in this range.");
+            } else {
+                for (Person p : list) {
+                    Member m = (Member) p;
+                    System.out.println(m.getName() + ": " + m.getAge() + " years old");
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number.");
+        }
+    }
+
 }
