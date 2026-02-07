@@ -1,83 +1,155 @@
 package menu;
 
+import database.PersonDAO;
 import model.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GymMenu implements Menu {
 
-    private ArrayList<Person> people = new ArrayList<>();
+    private PersonDAO personDAO = new PersonDAO();
     private Scanner scanner = new Scanner(System.in);
 
     @Override
     public void displayMenu() {
-        System.out.println("\nGYM MANAGEMENT SYSTEM");
+        System.out.println("\n--- GYM MANAGEMENT SYSTEM (DB) ---");
         System.out.println("1. Add Member");
         System.out.println("2. Add Trainer");
         System.out.println("3. Show All");
-        System.out.println("4. Polymorphism Demo");
+        System.out.println("4. Update Name");
+        System.out.println("5. Delete Person");
+        System.out.println("6. Search by Name");
+        System.out.println("7. Find by ID (Req)");
+        System.out.println("8. Search Experienced Trainers (Numeric Req)");
         System.out.println("0. Exit");
     }
 
     @Override
     public void run() {
         boolean running = true;
-
         while (running) {
             displayMenu();
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter choice: ");
+            String choice = scanner.nextLine();
 
-                switch (choice) {
-                    case 1 -> addMember();
-                    case 2 -> addTrainer();
-                    case 3 -> showAll();
-                    case 4 -> demoWork();
-                    case 0 -> running = false;
-                    default -> System.out.println("Invalid choice");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Enter a number!");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+            switch (choice) {
+                case "1" -> addMember();
+                case "2" -> addTrainer();
+                case "3" -> showAll();
+                case "4" -> updatePerson();
+                case "5" -> deletePerson();
+                case "6" -> searchPerson();
+                case "7" -> findById();
+                case "8" -> searchByExperience();
+                case "0" -> running = false;
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
     }
 
     private void addMember() {
-        System.out.print("ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Age: ");
-        int age = Integer.parseInt(scanner.nextLine());
-
-        people.add(new Member(id, name, age, "Basic", true));
-        System.out.println("Member added!");
+        try {
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Age: ");
+            int age = Integer.parseInt(scanner.nextLine());
+            // ID is 0 because the Database auto-generates it
+            personDAO.addPerson(new Member(0, name, age, "Basic", true));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Please enter a valid number for age.");
+        }
     }
 
     private void addTrainer() {
-        System.out.print("ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
-
-        people.add(new Trainer(id, name, "General", 5, true));
-        System.out.println("Trainer added!");
+        try {
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Experience Years: ");
+            int exp = Integer.parseInt(scanner.nextLine());
+            personDAO.addPerson(new Trainer(0, name, "General", exp, true));
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Please enter a number for experience.");
+        }
     }
 
     private void showAll() {
-        for (Person p : people) {
+        List<Person> list = personDAO.getAllPeople();
+        System.out.println("\n--- Database Results ---");
+        for (Person p : list) {
+            System.out.println("ID: " + p.getId() + " | Name: " + p.getName() + " | Type: " + p.getClass().getSimpleName());
             p.work();
         }
     }
 
-    private void demoWork() {
-        for (Person p : people) {
-            p.work();
+    private void updatePerson() {
+        try {
+            System.out.print("Enter ID to update: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter new name: ");
+            String name = scanner.nextLine();
+            personDAO.updatePerson(id, name);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID.");
+        }
+    }
+
+    private void deletePerson() {
+        try {
+            System.out.print("Enter ID to delete: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            System.out.print("Are you sure? (yes/no): ");
+            if (scanner.nextLine().equalsIgnoreCase("yes")) {
+                personDAO.deletePerson(id);
+            } else {
+                System.out.println("Deletion cancelled.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID.");
+        }
+    }
+
+    private void searchPerson() {
+        System.out.print("Enter name to search: ");
+        String query = scanner.nextLine();
+        List<Person> results = personDAO.searchByName(query);
+
+        System.out.println("--- Search Results ---");
+        for (Person p : results) {
+            System.out.println("Found: " + p.getName() + " (ID: " + p.getId() + ")");
+        }
+    }
+
+    // --- NEW METHOD for Requirement ---
+    private void findById() {
+        System.out.print("Enter ID to find: ");
+        try {
+            int id = Integer.parseInt(scanner.nextLine());
+            Person p = personDAO.getPersonById(id);
+            if (p != null) {
+                System.out.println("Found: " + p.getName() + " (" + p.getClass().getSimpleName() + ")");
+            } else {
+                System.out.println("No person found with ID: " + id);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid ID.");
+        }
+    }
+
+    // --- NEW METHOD for Numeric Requirement ---
+    private void searchByExperience() {
+        System.out.print("Enter minimum years of experience: ");
+        try {
+            int years = Integer.parseInt(scanner.nextLine());
+            List<Person> list = personDAO.searchByMinExperience(years);
+            System.out.println("--- Experienced Trainers ---");
+            for (Person p : list) {
+                if (p instanceof Trainer) {
+                    Trainer t = (Trainer) p;
+                    System.out.println(t.getName() + ": " + t.getExperienceYears() + " years");
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number.");
         }
     }
 }

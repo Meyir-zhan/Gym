@@ -11,6 +11,27 @@ public class Trainer extends Person implements Trainable {
         this.experienceYears = experienceYears;
     }
 
+    // --- GETTERS (Required for Database) ---
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public int getExperienceYears() {
+        return experienceYears;
+    }
+
+    // --- SETTERS ---
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setExperienceYears(int experienceYears) {
+        if (experienceYears < 0) {
+            throw new IllegalArgumentException("Experience cannot be negative");
+        }
+        this.experienceYears = experienceYears;
+    }
+
     @Override
     public boolean isExperienced() {
         return experienceYears >= 5;

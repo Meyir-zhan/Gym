@@ -12,9 +12,24 @@ public abstract class Person {
         this.active = active;
     }
 
+    // --- GETTERS (Required for Database) ---
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    // --- SETTERS (Required for Logic) ---
     public void setId(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("ID must be positive");
+        // ID can be 0 when creating new objects for DB auto-generation
+        if (id < 0) {
+            throw new IllegalArgumentException("ID cannot be negative");
         }
         this.id = id;
     }
@@ -24,6 +39,10 @@ public abstract class Person {
             throw new IllegalArgumentException("Name cannot be empty");
         }
         this.name = name;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public abstract void work();
